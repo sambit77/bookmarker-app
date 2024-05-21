@@ -20,8 +20,7 @@ public class BookmarkController {
     private final BookmarkService bookmarkService;
 
     @GetMapping
-    public BookmarksDTO getBookmarks(@RequestParam(name = "page", defaultValue = "1") Integer page)
-    {
-        return  bookmarkService.getBookmarks(page);
+    public BookmarksDTO getBookmarks(@RequestParam(name = "page", defaultValue = "1") Integer page) {
+        return bookmarkService.getBookmarks(page);
     }
 }
