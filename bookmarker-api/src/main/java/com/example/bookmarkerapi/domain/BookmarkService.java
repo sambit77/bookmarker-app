@@ -26,4 +26,15 @@ public class BookmarkService {
         Page<BookmarkDTO> returnedPage= repository.findBookmarks(pageable);
         return new BookmarksDTO(returnedPage);
     }
+
+    public BookmarksDTO searchBookmarks(String query,Integer page) {
+        int pageNo = page < 1 ? 0 : page-1;
+        Pageable pageable = PageRequest.of(pageNo,5, Sort.Direction.DESC,"createdAt");
+        //Page<BookmarkDTO> returnedPage= repository.serachBookmarks(query,pageable);
+        Page<BookmarkDTO> returnedPage= repository.findByTitleContainsIgnoreCase(query,pageable);
+
+        //Interface based DB projection
+        //Page<BookmarkVM> returnedPageInterfaceMapping= repository.findByTitleContainsIgnoreCase(query,pageable);
+        return new BookmarksDTO(returnedPage);
+    }
 }
