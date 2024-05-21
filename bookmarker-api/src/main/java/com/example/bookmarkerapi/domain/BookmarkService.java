@@ -36,5 +36,6 @@ public class BookmarkService {
         //Interface based DB projection
         //Page<BookmarkVM> returnedPageInterfaceMapping= repository.findByTitleContainsIgnoreCase(query,pageable);
         return new BookmarksDTO(returnedPage);
+
     }
 }
