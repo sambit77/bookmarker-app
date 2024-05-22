@@ -128,6 +128,7 @@ class BookmarkControllerTest {
                 .andExpect(jsonPath("$.violations[0].field", Matchers.is("url")))
                 .andExpect(jsonPath("$.violations[0].message", Matchers.is("url can not be empty")));
 
+
     }
 
 }
