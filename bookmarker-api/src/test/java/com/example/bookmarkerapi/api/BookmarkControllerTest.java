@@ -4,6 +4,7 @@ package com.example.bookmarkerapi.api;
 import com.example.bookmarkerapi.domain.Bookmark;
 import com.example.bookmarkerapi.domain.BookmarkRepository;
 import org.hamcrest.CoreMatchers;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -11,6 +12,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MockMvcBuilder;
@@ -22,6 +24,10 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.github.dockerjava.zerodep.shaded.org.apache.hc.core5.http.io.support.ClassicRequestBuilder.post;
+import static net.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -80,6 +86,48 @@ class BookmarkControllerTest {
                 .andExpect(jsonPath("$.isLast", CoreMatchers.equalTo(isLast)))
                 .andExpect(jsonPath("$.hasNext", CoreMatchers.equalTo(hasNext)))
                 .andExpect(jsonPath("$.hasPrevious", CoreMatchers.equalTo(hasPrevious)));
+    }
+
+    @Test
+    void shouldCreateBookmarkSuccessfully() throws  Exception
+    {
+        this.mvc.perform(
+                MockMvcRequestBuilders.post("/api/bookmarks")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                "title" : "mock URL",
+                                "url" :"http://mock.uri"
+                                }
+                                """)
+
+        )
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id",notNullValue()))
+                .andExpect(jsonPath("$.title", Matchers.is("mock URL")))
+                .andExpect(jsonPath("$.url",Matchers.is("http://mock.uri")));
+    }
+
+    @Test
+    void shouldFailCreateBookmarkWhenUrlIsNotPresent() throws Exception {
+        this.mvc.perform(
+                        MockMvcRequestBuilders.post("/api/bookmarks")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content("""
+                                {
+                                "title" : "mock URL"
+                                }
+                                """)
+
+                )
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.status",Matchers.is(400)))
+                .andExpect(jsonPath("$.type", Matchers.is("https://zalando.github.io/problem/constraint-violation")))
+                .andExpect(jsonPath("$.title", Matchers.is("Constraint Violation")))
+                .andExpect(jsonPath("$.violations", hasSize(1)))
+                .andExpect(jsonPath("$.violations[0].field", Matchers.is("url")))
+                .andExpect(jsonPath("$.violations[0].message", Matchers.is("url can not be empty")));
+
     }
 
 }

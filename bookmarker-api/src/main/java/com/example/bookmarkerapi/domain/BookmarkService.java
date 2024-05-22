@@ -9,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -17,6 +18,7 @@ import java.util.List;
 public class BookmarkService {
 
     private final  BookmarkRepository repository;
+    private  final BookmarkMapper bookmarkMapper;
 
 
     //@Transactional(readOnly = true)
@@ -37,5 +39,11 @@ public class BookmarkService {
         //Page<BookmarkVM> returnedPageInterfaceMapping= repository.findByTitleContainsIgnoreCase(query,pageable);
         return new BookmarksDTO(returnedPage);
 
+    }
+
+    public BookmarkDTO createBookmark(CreateBookmarkRequest request) {
+        Bookmark bookmark = new Bookmark(null, request.getTitle(), request.getUrl(), Instant.now());
+        Bookmark savedBookmark = repository.save(bookmark);
+        return bookmarkMapper.toBookmarkDTO(savedBookmark);
     }
 }
