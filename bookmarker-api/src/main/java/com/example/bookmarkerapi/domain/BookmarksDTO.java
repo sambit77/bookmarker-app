@@ -32,6 +32,8 @@ public class BookmarksDTO {
         this.setHasPrevious(bookmarkPage.hasPrevious());
         this.setHasNext(bookmarkPage.hasNext());
 
+
+
     }
 
 }
