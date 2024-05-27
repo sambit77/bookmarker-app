@@ -3,9 +3,14 @@ import { BookmarksResponse } from "./models"
 import getConfig from 'next/config'
 import { RedirectType } from "next/navigation"
 
-export const  fetchBookmarks =  async (page: number) : Promise<BookmarksResponse> => {
+export const  fetchBookmarks =  async (page: number, query: string) : Promise<BookmarksResponse> => {
 
-    const url = `http://localhost:8080/api/bookmarks?page=${page}`
+    let url = `http://localhost:8080/api/bookmarks?page=${page}`
+
+    if(query)
+        {
+            url += `&query=${query}`
+        }
     const res = await axios.get<BookmarksResponse>(url)
     return res.data
 }
