@@ -21,7 +21,7 @@ const AddBookMark: NextPage = () => {
     }
 
     const response = await saveBookmark(payload);
-    console.log("Saved successfully" , response);
+    //console.log("Saved successfully" , response);
     setTitle("");
     setUrl("");
     setMessage("Bookmark saved successfully");

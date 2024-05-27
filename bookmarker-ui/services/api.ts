@@ -5,8 +5,8 @@ import { RedirectType } from "next/navigation"
 const { serverRuntimeConfig, publicRuntimeConfig } = getConfig()
 
 const getApiUrl = () => {
-    console.log("Server runtime", serverRuntimeConfig);
-    console.log("public runtime",publicRuntimeConfig);
+    //console.log("Server runtime", serverRuntimeConfig);
+    //console.log("public runtime",publicRuntimeConfig);
     return serverRuntimeConfig.API_BASE_URL || publicRuntimeConfig.API_BASE_URL
 }
 
