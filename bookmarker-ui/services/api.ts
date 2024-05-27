@@ -14,3 +14,9 @@ export const  fetchBookmarks =  async (page: number, query: string) : Promise<Bo
     const res = await axios.get<BookmarksResponse>(url)
     return res.data
 }
+
+export const  saveBookmark =  async (bookmark: {title: string,url: string })  => {
+    const res = await axios.post(`http://localhost:8080/api/bookmarks`,bookmark)
+    return res.data
+}
+ 
