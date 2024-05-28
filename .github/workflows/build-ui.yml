@@ -2,9 +2,7 @@ name: Build
 
 on:
   push:
-    paths:
-      - "bookmarker-ui-nextjs/**"
-    branches: [ "main" ]
+    branches: [ "**" ]
   pull_request:
     paths:
       - "bookmarker-ui-nextjs/**"
