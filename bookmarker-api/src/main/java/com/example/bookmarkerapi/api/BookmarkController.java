@@ -22,6 +22,7 @@ public class BookmarkController {
         if(query == null || query.trim().length() == 0)
         {
             return bookmarkService.getBookmarks(page);
+
         }
         return bookmarkService.searchBookmarks(query,page);
     }
